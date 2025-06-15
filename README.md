@@ -53,13 +53,28 @@
     <img src="https://github.com/user-attachments/assets/a19bf705-8dd4-4414-a388-859987d53eda" height="200">
 
 
-## Prosedur 3: TanggapiDanPerbaruiStatusPengaduan (Pengaduan Masyarakat - E)
-- Tujuan: Memberikan tanggapan dan memperbarui status pengaduan.
-- Input: `ID Pengaduan, Isi Tanggapan, ID Staff, Status Baru`.
-- Alur:
-  1. Validasi input dan keberadaan data terkait.
-  2. `START TRANSACTION`.
-  3. Rekam tanggapan baru di `tanggapan_pengaduan`.
-  4. Perbarui status di pengaduan.
-  5. `COMMIT/ROLLBACK` transaksi.
-  6. Berikan pesan hasil.
+## Prosedur 3: TanggapiDanPerbaruiStatusPengaduan (E) 📪
+- **Tujuan :** Memungkinkan staff desa untuk memberikan tanggapan terhadap pengaduan masyarakat dan sekaligus memperbarui status pengaduan tersebut. Ini memastikan transparansi dan pencatatan riwayat penanganan.
+- - **Query** : [Link Procedure 3](https://github.com/itozt/tugasMBDFinal/blob/main/procedure3.sql)
+- **Input :** `ID Pengaduan, Isi Tanggapan, ID Staff, Status Baru`.
+- **Alur :**
+  1. Validasi Input: Pastikan p_id_pengaduan, p_isi_tanggapan, p_id_staff, dan p_status_baru tidak kosong dan nilai-nilainya valid (misal: ID pengaduan/staff ada, status valid).
+  2. Mulai Transaksi: Memastikan semua operasi dalam prosedur berjalan secara atomik (berhasil semua atau gagal semua).
+  3. Generate ID Tanggapan: Buat ID unik baru untuk entri tanggapan.
+  4. Catat Tanggapan: Masukkan data tanggapan baru ke tabel tanggapan_pengaduan, termasuk ID pengaduan dan staff yang terkait.
+  5. Perbarui Status Pengaduan: Ubah kolom status di tabel pengaduan menjadi p_status_baru.
+  6. Selesai Transaksi: Komit transaksi jika berhasil, atau rollback otomatis jika ada kesalahan.
+  7. Pesan Notifikasi: Berikan pesan keberhasilan atau error ke pengguna.
+- **Contoh :**
+  - Menanggapi pengaduan dari 'menunggu' menjadi 'Diproses' :
+    ``` sql
+    CALL TanggapiDanPerbaruiStatusPengaduan('PNGDN000004SJGZC', 'Pengaduan penyalahgunaan wewenang diterima, sedang dalam investigasi awal.', 'STAFF09UQUKLHETN', 'Diproses');
+    ```
+    Hasil : <br>
+    <img src="https://github.com/user-attachments/assets/c7e9ee84-ded6-4f1d-9786-267da72482e4" height="200"><br>
+    Sebelum : <br>
+    <img src="https://github.com/user-attachments/assets/a0b75952-e401-4b79-aa0e-aadb22dc0cd3" height="80"> <br>
+    Sesudah : <br>
+    <img src="https://github.com/user-attachments/assets/9683a704-e568-437f-8889-d6d5249f673c" height="80">
+
+
