@@ -3,7 +3,7 @@ CREATE OR REPLACE PROCEDURE ProsesPermohonanSurat(
     p_status_baru VARCHAR(20),
     p_id_staff VARCHAR(16),
     p_catatan_respon TEXT,
-    p_url_file_surat TEXT DEFAULT NULL -- url_file_surat hanya relevan jika status_baru = 'Selesai'
+    p_url_file_surat TEXT DEFAULT NULL 
 )
 LANGUAGE plpgsql
 AS $$
