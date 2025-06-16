@@ -33,14 +33,14 @@
 - **Query** : [Link Procedure 2](https://github.com/itozt/tugasMBDFinal/blob/main/procedure2.sql)
 - **Input** : (Tidak ada, berjalan otomatis).
 - **Alur** :
-  0. Buat kolom atribut `status_ekonomi` di tabel warga.
-  1. Iterasi Warga : Prosedur akan memproses setiap warga satu per satu.
-  2. Ambil Data Relevan : Untuk setiap warga, ambil gaji_per_bulan dari pekerjaannya dan hitung jumlah_anggota_keluarga dari KK-nya.
-  3. Hitung Pendapatan Per Kapita : Hitung gaji_per_bulan dibagi jumlah_anggota_keluarga.
-  4. Tentukan Status Ekonomi : Bandingkan pendapatan_per_kapita dengan ambang batas yang telah ditentukan (misal: 500 ribu untuk 'Tidak Mampu', 1 juta untuk 'Rentan', dst.) untuk menentukan status_ekonomi yang sesuai.
-  5. Perbarui Status (jika berubah) : Update kolom status_ekonomi di tabel warga jika ada perubahan dari nilai sebelumnya.
-  6. Transaksi : Seluruh proses berjalan dalam satu transaksi otomatis; jika ada error, semua perubahan dibatalkan.
-  7. Notifikasi : Berikan pesan keberhasilan atau error.
+  1. Buat kolom atribut `status_ekonomi` di tabel warga.
+  2. Iterasi Warga : Prosedur akan memproses setiap warga satu per satu.
+  3. Ambil Data Relevan : Untuk setiap warga, ambil gaji_per_bulan dari pekerjaannya dan hitung jumlah_anggota_keluarga dari KK-nya.
+  4. Hitung Pendapatan Per Kapita : Hitung gaji_per_bulan dibagi jumlah_anggota_keluarga.
+  5. Tentukan Status Ekonomi : Bandingkan pendapatan_per_kapita dengan ambang batas yang telah ditentukan (misal: 500 ribu untuk 'Tidak Mampu', 1 juta untuk 'Rentan', dst.) untuk menentukan status_ekonomi yang sesuai.
+  6. Perbarui Status (jika berubah) : Update kolom status_ekonomi di tabel warga jika ada perubahan dari nilai sebelumnya.
+  7. Transaksi : Seluruh proses berjalan dalam satu transaksi otomatis; jika ada error, semua perubahan dibatalkan.
+  8. Notifikasi : Berikan pesan keberhasilan atau error.
 - **Contoh** :
   - Memulai proses analisis dan pembaruan status_ekonomi untuk seluruh data penduduk di database :
     ``` sql
