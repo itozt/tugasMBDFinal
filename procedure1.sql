@@ -52,7 +52,7 @@ BEGIN
 
     -- 5. Kondisional: Jika Status Baru Adalah 'Selesai', maka buat entri surat
     IF p_status_baru = 'Selesai' THEN
-        -- Generate Nomor Surat Otomatis (contoh: SRT/YYYY/MM/NomorUrut)
+        -- Generate Nomor Surat Otomatis
         -- Mencari nomor urut terakhir untuk bulan dan tahun ini
         SELECT COALESCE(MAX(SUBSTRING(nomor_surat FROM '[0-9]+')::INT), 0) + 1
         INTO v_next_surat_num
@@ -65,7 +65,7 @@ BEGIN
             nomor_surat,
             tanggal_cetak,
             url_file,
-            respon_permohonan_id_respon -- Kolom FK di tabel surat
+            respon_permohonan_id_respon
         )
         VALUES (
             'SRT' || LPAD(FLOOR(RANDOM() * 99999999)::TEXT, 8, '0') || SUBSTRING(MD5(RANDOM()::TEXT) FROM 1 FOR 5), -- ID Surat
