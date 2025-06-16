@@ -8,16 +8,13 @@ DECLARE
     v_pendapatan_per_kapita NUMERIC;
     v_new_status_ekonomi VARCHAR(20);
 
-    -- Definisikan ambang batas ekonomi (sesuaikan dengan kebijakan desa)
-    THRESHOLD_TIDAK_MAMPU NUMERIC := 500000; -- Pendapatan per kapita di bawah ini
-    THRESHOLD_RENTAN NUMERIC := 1000000;      -- Pendapatan per kapita di bawah ini
-    THRESHOLD_MENENGAH NUMERIC := 2500000;    -- Pendapatan per kapita di bawah ini
+    -- Definisikan ambang batas ekonomi 
+    THRESHOLD_TIDAK_MAMPU NUMERIC := 500000; -- Pendapatan per kapita di bawah 500ribu
+    THRESHOLD_RENTAN NUMERIC := 1000000;      -- Pendapatan per kapita di bawah 1juta
+    THRESHOLD_MENENGAH NUMERIC := 2500000;    -- Pendapatan per kapita di bawah 2.5juta
     -- Di atas THRESHOLD_MENENGAH bisa dianggap 'Mampu'
 BEGIN
     RAISE NOTICE 'Memulai prosedur UpdateStatusEkonomiPendudukOtomatis...';
-
-    -- Mulai Transaksi
-    -- Transaksi otomatis ditangani oleh prosedur PL/pgSQL.
 
     -- Loop melalui setiap warga
     FOR r IN SELECT nik, keluarga_no_kk, pekerjaan_id_pekerjaan FROM warga LOOP
@@ -26,8 +23,6 @@ BEGIN
         FROM pekerjaan p
         WHERE p.id_pekerjaan = r.pekerjaan_id_pekerjaan;
 
-        -- Jika pekerjaan_id_pekerjaan NULL, v_gaji_per_bulan akan 0 dari COALESCE
-
         -- 2. Hitung Jumlah Anggota Keluarga untuk KK warga tersebut
         SELECT COUNT(w.nik) INTO v_jumlah_anggota_keluarga
         FROM warga w
@@ -35,7 +30,7 @@ BEGIN
 
         -- Pastikan jumlah anggota tidak nol untuk menghindari pembagian dengan nol
         IF v_jumlah_anggota_keluarga = 0 THEN
-            v_pendapatan_per_kapita := 0; -- Atau tangani sesuai kebijakan (misal: RAISE EXCEPTION)
+            v_pendapatan_per_kapita := 0;
         ELSE
             v_pendapatan_per_kapita := v_gaji_per_bulan / v_jumlah_anggota_keluarga;
         END IF;
@@ -52,7 +47,6 @@ BEGIN
         END IF;
 
         -- 4. Perbarui Status Ekonomi Warga
-        -- Hanya update jika status_ekonomi berubah untuk menghindari UPDATE yang tidak perlu
         UPDATE warga
         SET status_ekonomi = v_new_status_ekonomi
         WHERE nik = r.nik AND COALESCE(status_ekonomi, '') != v_new_status_ekonomi;
